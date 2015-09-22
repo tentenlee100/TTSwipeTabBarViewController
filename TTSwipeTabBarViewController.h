@@ -1,9 +1,7 @@
 //
 //  TTSwipeTabBarViewController.h
-//  AbisinApp
 //
 //  Created by tenten on 2014/12/26.
-//  Copyright (c) 2014年 Victoria Sun. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
