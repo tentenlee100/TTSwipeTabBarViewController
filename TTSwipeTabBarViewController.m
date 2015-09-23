@@ -171,7 +171,7 @@ NSString * const TTsegmentBarItemID = @"JYSegmentBarItem";
         _segmentBar.dataSource = self;
         UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, frame.size.height - 1, frame.size.width, 1)];
         //        [separator setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
-        [separator setBackgroundColor:UIColorFromRGB(0xdcdcdc)];
+        [separator setBackgroundColor:[UIColor blackColor]];
         [_segmentBar addSubview:separator];
     }
     return _segmentBar;
