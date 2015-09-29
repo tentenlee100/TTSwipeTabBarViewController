@@ -58,6 +58,8 @@ extern NSString *const TTsegmentBarItemID;
 
 @property (nonatomic, weak, readonly) UIViewController *selectedViewController;
 @property (nonatomic, assign, readonly) NSInteger selectedIndex;
+@property (nonatomic, assign) NSUInteger segmentBarY;
+@property (nonatomic, assign) NSUInteger segmentBarHeight;
 
 
 /**

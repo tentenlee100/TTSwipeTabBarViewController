@@ -154,16 +154,26 @@ NSString * const TTsegmentBarItemID = @"JYSegmentBarItem";
 }
 - (void)resetSegmentBar{
     CGRect frame = self.view.bounds;
-    frame.size.height = SEGMENT_BAR_HEIGHT;
-    frame.origin.y = SEGMENT_BAR_Y;
+    if (self.segmentBarHeight != 0) {
+        frame.size.height = _segmentBarHeight;
+    }else{
+        frame.size.height = SEGMENT_BAR_HEIGHT;
+    }
+    frame.origin.y = _segmentBarY;
+
     _segmentBar.frame = frame;
 }
 - (UICollectionView *)segmentBar
 {
     if (!_segmentBar) {
         CGRect frame = self.view.bounds;
-        frame.size.height = SEGMENT_BAR_HEIGHT;
-        frame.origin.y = SEGMENT_BAR_Y;
+        if (self.segmentBarHeight != 0) {
+            frame.size.height = _segmentBarHeight;
+        }else{
+            frame.size.height = SEGMENT_BAR_HEIGHT;
+        }
+        frame.origin.y = _segmentBarY;
+
         _segmentBar = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:self.segmentBarLayout];
         _segmentBar.backgroundColor = [UIColor whiteColor];
         //        _segmentBar.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleLeftMargin |UIViewAutoresizingFlexibleTopMargin ;
