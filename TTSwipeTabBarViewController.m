@@ -6,8 +6,8 @@
 
 #import "TTSwipeTabBarViewController.h"
 
-#define SEGMENT_BAR_HEIGHT 44
-#define SEGMENT_BAR_Y 64
+#define SEGMENT_BAR_HEIGHT 60
+#define SEGMENT_BAR_Y 0
 #define INDICATOR_HEIGHT 3
 
 NSString * const TTsegmentBarItemID = @"JYSegmentBarItem";
@@ -75,7 +75,7 @@ NSString * const TTsegmentBarItemID = @"JYSegmentBarItem";
 - (void)viewDidLoad {
     [self setupSubviews];
     [self reset];
-    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object: nil];
+//    [[NSNotificationCenter defaultCenter] addObserver: self selector: @selector(deviceOrientationDidChange:) name: UIDeviceOrientationDidChangeNotification object: nil];
 
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -86,7 +86,6 @@ NSString * const TTsegmentBarItemID = @"JYSegmentBarItem";
     CGSize conentSize = CGSizeMake(self.view.frame.size.width * self.viewControllers.count, 0);
     [self.slideView setContentSize:conentSize];
     [self resetSubViewFrame];
-
     [super viewDidAppear:animated];
     
 }
@@ -97,7 +96,7 @@ NSString * const TTsegmentBarItemID = @"JYSegmentBarItem";
 
 }
 - (void)dealloc{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -154,33 +153,23 @@ NSString * const TTsegmentBarItemID = @"JYSegmentBarItem";
 }
 - (void)resetSegmentBar{
     CGRect frame = self.view.bounds;
-    if (self.segmentBarHeight != 0) {
-        frame.size.height = _segmentBarHeight;
-    }else{
-        frame.size.height = SEGMENT_BAR_HEIGHT;
-    }
-    frame.origin.y = _segmentBarY;
-
+    frame.size.height = SEGMENT_BAR_HEIGHT;
+    frame.origin.y = SEGMENT_BAR_Y;
     _segmentBar.frame = frame;
 }
 - (UICollectionView *)segmentBar
 {
     if (!_segmentBar) {
         CGRect frame = self.view.bounds;
-        if (self.segmentBarHeight != 0) {
-            frame.size.height = _segmentBarHeight;
-        }else{
-            frame.size.height = SEGMENT_BAR_HEIGHT;
-        }
-        frame.origin.y = _segmentBarY;
-
+        frame.size.height = SEGMENT_BAR_HEIGHT;
+        frame.origin.y = SEGMENT_BAR_Y;
         _segmentBar = [[UICollectionView alloc] initWithFrame:frame collectionViewLayout:self.segmentBarLayout];
         _segmentBar.backgroundColor = [UIColor whiteColor];
         //        _segmentBar.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleLeftMargin |UIViewAutoresizingFlexibleTopMargin ;
         _segmentBar.delegate = self;
         _segmentBar.dataSource = self;
         UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, frame.size.height - 1, frame.size.width, 1)];
-        //        [separator setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
+        [separator setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin];
         [separator setBackgroundColor:[UIColor blackColor]];
         [_segmentBar addSubview:separator];
     }
@@ -190,7 +179,7 @@ NSString * const TTsegmentBarItemID = @"JYSegmentBarItem";
     CGRect frame = CGRectMake(0, self.segmentBar.frame.size.height - INDICATOR_HEIGHT - 1,
                               self.view.frame.size.width / self.viewControllers.count, INDICATOR_HEIGHT);
     CGFloat percent = self.slideView.contentOffset.x / self.slideView.contentSize.width;
-    frame.origin.x = self.slideView.frame.size.width * percent;
+    frame.origin.x = self.slideView.frame.size.width * percent ;
     self.indicatorBgView.frame = frame;
 
 }
@@ -217,7 +206,7 @@ NSString * const TTsegmentBarItemID = @"JYSegmentBarItem";
         CGFloat width = self.view.frame.size.width / self.viewControllers.count - self.indicatorInsets.left - self.indicatorInsets.right;
         CGRect frame = CGRectMake(self.indicatorInsets.left, 0, width, INDICATOR_HEIGHT);
         _indicator = [[UIView alloc] initWithFrame:frame];
-        _indicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+//        _indicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         _indicator.backgroundColor = [UIColor yellowColor];
     }
     return _indicator;
@@ -394,18 +383,18 @@ NSString * const TTsegmentBarItemID = @"JYSegmentBarItem";
 }
 #pragma mark - o
 - (void)deviceOrientationDidChange:(NSNotification *)notification{
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self resetSubViewFrame];
-
-    });
-}
-//- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-//{
-//    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-//    
 //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //        [self resetSubViewFrame];
-//        [self.segmentBar reloadData];
+//
+//    });
+}
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self resetSubViewFrame];
+        [self.segmentBar reloadData];
 //        for (int i = 0; i < self.viewControllers.count; i ++) {
 //            UIViewController *vc = self.viewControllers[i];
 //            CGRect frame = self.view.frame;
@@ -413,8 +402,8 @@ NSString * const TTsegmentBarItemID = @"JYSegmentBarItem";
 //            vc.view.frame = frame;
 //        }
 //        [self scrollToViewWithIndex:self.selectedIndex animated:NO];
-//    });
-//    
-//    
-//}
+    });
+    
+    
+}
 @end
